@@ -1,16 +1,16 @@
-library("data.table")
+library("data.table") 
 
-#Reads in data from file then subsets data for specified dates
-powerDT <- data.table::fread(input = "household_power_consumption.txt", na.strings="?")
+#Reads in data 
+col <- c(Voltage="numeric", Global_active_power="numeric", Global_intensity="numeric" ,Sub_metering_1="numeric", Sub_metering_2="numeric",  Sub_metering_3="numeric", Global_active_power="numeric", Global_reactive_power="numeric")
+DT <-read.table("household_power_consumption.txt", header=TRUE, sep=";",dec=".", stringsAsFactors=FALSE, na.strings = "?",colClasses=col)
+# Change Date Column to Date Type
+neededDT <- DT[DT$Date %in% c("1/2/2007","2/2/2007"),]
+as.date(neededDT$Date)
+na.omit(neededDT)
 
-# For no Scientific Notation
-powerDT[, Global_active_power := lapply(.SD, as.numeric), .SDcols = c("Global_active_power")]
-powerDT[, dateTime := as.POSIXct(paste(Date, Time), format = "%d/%m/%Y %H:%M:%S")]
-
-# Filter Dates for 2007-02-01 and 2007-02-02
-powerDT <- powerDT[(dateTime >= "2007-02-01") & (dateTime < "2007-02-03")]
-png("plot2.png", width=480, height=480)
+png("plot2.png")
 
 ## Plot 2
-plot(x = powerDT[, dateTime], y = powerDT[, Global_active_power], type="l", xlab="", ylab="Global Active Power (kilowatts)")
+plot(x = neededDT$dateTime, y = neededDT$Global_active_power, type="l", xlab="", ylab="Global Active Power (kilowatts)")
+
 dev.off()

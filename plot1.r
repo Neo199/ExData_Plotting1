@@ -1,16 +1,14 @@
 library("data.table") 
 
 #Reads in data 
-DT <- data.table::fread(input = "household_power_consumption.txt", na.strings="?")
-DT[, Global_active_power := lapply(.SD, as.numeric), .SDcols = c("Global_active_power")]
-
+cls <- c(Voltage="numeric", Global_active_power="numeric", Global_intensity="numeric" ,Sub_metering_1="numeric", Sub_metering_2="numeric",  Sub_metering_3="numeric", Global_active_power="numeric", Global_reactive_power="numeric")
+DT <-read.table("household_power_consumption.txt", header=TRUE, sep=";",dec=".", stringsAsFactors=FALSE, na.strings = "?",colClasses=cls)
 # Change Date Column to Date Type
-DT[, Date := lapply(.SD, as.Date, "%d/%m/%Y"), .SDcols = c("Date")]
-
-# Filter Dates
-DT <- DT[(Date >= "2007-02-01") & (Date <= "2007-02-02")]
-png("plot1.png", width=480, height=480)
+neededDT <- DT[DT$Date %in% c("1/2/2007","2/2/2007"),])
+as.date(neededDT$Date)
+na.omit(neededDT)
 
 ## Plot 1
-hist(DT[, Global_active_power], main="Global Active Power", xlab="Global Active Power (kilowatts)", ylab="Frequency", col="Red")
+png("plot1.png")
+hist(neededDT$Global_active_power, main="Global Active Power", col="Red", xlab="Global Active Power (kilowatts)", ylab="Frequency")
 dev.off()

@@ -8,9 +8,8 @@ neededDT <- DT[DT$Date %in% c("1/2/2007","2/2/2007"),]
 as.date(neededDT$Date)
 na.omit(neededDT)
 
-png("plot2.png")
-
 ## Plot 2
+png("plot2.png")
 plot(x = neededDT$dateTime, y = neededDT$Global_active_power, type="l", xlab="", ylab="Global Active Power (kilowatts)")
 
 dev.off()

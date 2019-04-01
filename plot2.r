@@ -5,7 +5,7 @@ col <- c(Voltage="numeric", Global_active_power="numeric", Global_intensity="num
 DT <-read.table("household_power_consumption.txt", header=TRUE, sep=";",dec=".", stringsAsFactors=FALSE, na.strings = "?",colClasses=col)
 # Change Date Column to Date Type
 neededDT <- DT[DT$Date %in% c("1/2/2007","2/2/2007"),]
-as.date(neededDT$Date)
+as.Date(neededDT$Date)
 na.omit(neededDT)
 
 ## Plot 2
